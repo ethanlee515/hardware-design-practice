@@ -23,8 +23,8 @@ class Cordic (theta : Double) {
     val sigma = if (beta > 0) 1 else -1
     val a = x / pow(2, i);
     val b = y / pow(2, i);
-    //println(s"i = ${i}, beta = ${beta}")
-    println(s"i = ${i}, (x, y) = (${x}, ${y})")
+    // println(s"i = ${i}, beta = ${beta}")
+    // println(s"i = ${i}, (x, y) = (${x}, ${y})")
     x = x - sigma * b;
     y = y + sigma * a;
     beta = beta - sigma * Precompute.step_sizes(i)
