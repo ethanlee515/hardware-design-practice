@@ -112,7 +112,7 @@ object Main extends App {
     }
   }
   val v = args(0).toDouble
-  if(v < 0 || v > 1) {
+  if(v < 0 || v >= 1) {
     println("input out of range")
     sys.exit()
   }
