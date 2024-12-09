@@ -14,8 +14,6 @@ object Cordic extends Component {
 
   val theta = in(AFix.U(0 exp, -16 exp))
   val theta_valid = in(Bool())
-  val cosine = out(AFix.U(0 exp, -16 exp))
-  val sine = out(AFix.U(0 exp, -16 exp))
 
   val STATE_WAITING = 0
   val STATE_COMPUTING = 1
@@ -30,6 +28,13 @@ object Cordic extends Component {
 
   val x = Reg(AFix.U(1 exp, -16 exp)) init(1)
   val y = Reg(AFix.U(1 exp, -16 exp)) init(1)
+  val correction = AFix.U(0 exp, -16 exp)
+  correction := Precompute.correction
+  val cosine = out(AFix.U(0 exp, -16 exp))
+  val sine = out(AFix.U(0 exp, -16 exp))
+  cosine := x * correction
+  sine := y * correction
+
   val beta = Reg(AFix.S(1 exp, -16 exp))
   val half = AFix.U(1 exp, -16 exp)
   when ((state === STATE_WAITING) && theta_valid) {
@@ -78,18 +83,15 @@ object Cordic extends Component {
   cw_beta := beta + step_size 
   beta := is_ccw ? ccw_beta | cw_beta
 
-  val correction = AFix.U(0 exp, -16 exp)
-  correction := Precompute.correction
   when(state === STATE_COMPUTING) {
-    when (iter === 15) {
-      state := STATE_DONE
-      cosine := next_x * correction
-      sine := next_y * correction
-    } otherwise {
-      x := next_x
-      y := next_y
-    }
+    x := next_x
+    y := next_y
     iter := iter + 1
+  }
+
+  // off by one error?
+  when(iter === 15) {
+    state := STATE_DONE
   }
 }
 
