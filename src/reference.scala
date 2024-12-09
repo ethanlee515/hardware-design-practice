@@ -8,35 +8,28 @@ import scala.math.sin
 import scala.math.Pi
 
 object Precompute {
-  val iterations = 40
-  val step_sizes = for (i <- 0 to iterations) yield atan(pow(2, -i)) / (Pi / 2)
+  val iterations = 16
+  val step_sizes = for (i <- 0 until iterations) yield atan(pow(2, -i)) / (Pi / 2)
+  val correction = 0.607252935
 }
 
 class Cordic (theta : Double) {
-
   private var x = 1.0
   private var y = 1.0
   private var beta = theta - 0.5
   private var i = 1;
-
-  private val correction = 0.607252935
   
   def do_iterate {
-    val sigma = if (beta < 0) -1 else 1
+    val sigma = if (beta > 0) 1 else -1
     val a = x / pow(2, i);
     val b = y / pow(2, i);
-    // println(f"i = $i, beta = $beta, stepping ${Precompute.step_sizes(i)}")
-    // println(f"x = $x, y = $y")
     x = x - sigma * b;
     y = y + sigma * a;
     beta = beta - sigma * Precompute.step_sizes(i)
     i += 1
   }
 
-  def compute_output = (correction * x, correction * y)
-
-  def getX = x
-  def getY = y
+  def compute_output = (Precompute.correction * x, Precompute.correction * y)
 }
 
 object Main extends App {
