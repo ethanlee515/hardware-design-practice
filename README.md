@@ -4,5 +4,5 @@ Usage: `mill Main.runMain main.Main x` where `x` is a number in the interval [0,
 
 Details:
 * 16 iterations, one clock cycle per iteration
-* No pipelining yet, but uses ready/valid stream paradigm to take input and to indicate when computation is done
+* No pipelining yet, but uses ready/valid stream interface to take input and to indicate when computation is done
 * Code quality kinda atrocious
