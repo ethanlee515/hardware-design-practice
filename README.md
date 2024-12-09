@@ -1,6 +1,4 @@
-# hardware-design-practice
-
-Learning SpinalHDL by implementing Cordic
+# SpinalHDL Exercise: Implementing Cordic
 
 Usage: `mill Main.runMain main.Main x` where `x` is a number in the interval [0, 1), for a normalized angle in [0, PI/2).
 
