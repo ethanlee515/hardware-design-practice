@@ -39,10 +39,10 @@ class Cordic extends Component {
   sine := (y * correction).truncated
 
   val beta = Reg(AFix.S(1 exp, -16 exp))
-  val half = AFix.U(1 exp, -16 exp)
-  half := 0.5
   when ((state === STATE_WAITING) && theta_valid) {
     state := STATE_COMPUTING
+    val half = AFix.U(1 exp, -16 exp)
+    half := 0.5
     beta := theta - half
   } 
 
@@ -92,7 +92,6 @@ class Cordic extends Component {
     beta := is_ccw ? ccw_beta | cw_beta
   }
 
-  // off by one error?
   when(iter === 15) {
     state := STATE_DONE
   }
@@ -118,14 +117,7 @@ object Main extends App {
     sys.exit()
   }
 
-  SimConfig.compile {
-    val dut = new Cordic
-    dut.iter.simPublic
-    dut.beta.simPublic
-    dut.x.simPublic
-    dut.y.simPublic
-    dut
-  }.doSim { dut =>
+  SimConfig.compile {new Cordic}.doSim { dut =>
     dut.theta_valid #= false
 
     // clock-related boilerplate
@@ -147,19 +139,13 @@ object Main extends App {
     // compute
     for(i <- 1 to 20) {
       sleep(10)
-      println(f"i = $i, iter = ${dut.iter.toInt}, beta = ${dut.beta.toDouble}")
       if(dut.valid.toBoolean) {
         println(f"Computed cosine = ${dut.cosine.toDouble}, sine = ${dut.sine.toDouble} after ${i} cycles")
         println(f"Correct cosine = ${cos(v * Pi / 2)}, sine = ${sin(v * Pi / 2)}")
         sys.exit()
       }
-      //println(s"sine = ${dut.sine.toDouble}, cosine = ${dut.cosine.toDouble}")
-      //println(s"valid = ${dut.valid.toBoolean}")
-      //println(s"i = ${dut.iter.toInt}, beta = ${dut.beta.toDouble}")
-      //println(s"i = ${dut.iter.toInt}, (x, y) = (${dut.x.toDouble}, ${dut.y.toDouble})")
     }
-    // println(f"Computed cosine = ${dut.cosine.toDouble}, sine = ${dut.sine.toDouble}")
-    //println("Something is wrong: no result after 20 cycles")
+    println("Something is wrong: no result after 20 cycles")
   }
 }
 
