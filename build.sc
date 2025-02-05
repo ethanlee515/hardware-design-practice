@@ -2,10 +2,10 @@ import os.Path
 import mill._
 import mill.scalalib._
 
-object Main extends ScalaModule {
+object Cordic extends ScalaModule {
   def scalaVersion = "2.12.18"
 
-  override def millSourcePath = os.pwd
+  override def millSourcePath = os.pwd / "cordic"
   def ivyDeps = Agg(
     ivy"com.github.spinalhdl::spinalhdl-core:1.10.2a",
     ivy"com.github.spinalhdl::spinalhdl-lib:1.10.2a",
