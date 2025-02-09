@@ -4,6 +4,7 @@ import scala.math.min
 import spire.math.Complex
 import spire.implicits._
 
+// Direct, un-optimized implementation
 class FourierTransform(val xs : Seq[Complex[Double]]) {
   val n = xs.length
 
