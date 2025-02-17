@@ -39,14 +39,19 @@ class CxMul extends Component {
   prod.im := (z1.re * z2.im + z1.im * z2.re).truncated
 }
 
+class CxDiv2 extends Component {
+  val z = in(Cx())
+  val z2 = out(Cx())
+  z2.re := (z.re >> 1).truncated
+  z2.im := (z.im >> 1).truncated
+}
+
 object TestComplex extends App {
-  SimConfig.compile{ new CxMul }.doSim { dut =>
-    dut.z1.re #= 0.1
-    dut.z1.im #= -0.2
-    dut.z2.re #= 0.3
-    dut.z2.im #= 0.4
+  SimConfig.compile{ new CxDiv2 }.doSim { dut =>
+    dut.z.re #= 1.1
+    dut.z.im #= -2.2
     sleep(1)
-    println(dut.prod.re.toDouble)
-    println(dut.prod.im.toDouble)
+    println(dut.z2.re.toDouble)
+    println(dut.z2.im.toDouble)
   }
 }
