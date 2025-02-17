@@ -3,7 +3,9 @@ import spire.math.Complex
 import scala.math.Pi
 import spire.implicits._
 
-class Precompute(val num_layers : Int) {
+class Precompute(val xslen : Int) {
+  val num_layers = 31 - Integer.numberOfLeadingZeros(xslen)
+
   def twiddle_factor(l : Int, j : Int) : Complex[Double] = {
     return Complex.polar(1.0, - 2 * Pi * j / (1 << (num_layers - l)))
   }
@@ -15,17 +17,16 @@ class Precompute(val num_layers : Int) {
 
 // Result index is bit-reversed
 class CooleyTukey(xs : Seq[Complex[Double]]) {
-  val n = xs.length
-  val num_layers = 31 - Integer.numberOfLeadingZeros(n)
-  val precompute = new Precompute(num_layers)
+  val precompute = new Precompute(xs.length)
+  val num_layers = precompute.num_layers
 
   var content = xs
   var layer = 0
 
   def iter_layer() = {
-    val group_size = n >> layer
+    val group_size = xs.length >> layer
     val num_groups = 1 << layer
-    val new_content = new Array[Complex[Double]](n)
+    val new_content = new Array[Complex[Double]](xs.length)
     for(g <- 0 until num_groups) {
       for(j <- 0 until (group_size / 2)) {
         val left = g * group_size + j
@@ -52,17 +53,16 @@ class CooleyTukey(xs : Seq[Complex[Double]]) {
 }
 
 class InvCooleyTukey(xs : Seq[Complex[Double]]) {
-  val n = xs.length
-  val num_layers = 31 - Integer.numberOfLeadingZeros(n)
-  val precompute = new Precompute(num_layers)
+  val precompute = new Precompute(xs.length)
+  val num_layers = precompute.num_layers
 
   var content = xs
   var layer = num_layers - 1
 
   def iter_layer() = {
-    val group_size = n >> layer
+    val group_size = xs.length >> layer
     val num_groups = 1 << layer
-    val new_content = new Array[Complex[Double]](n)
+    val new_content = new Array[Complex[Double]](xs.length)
     for(g <- 0 until num_groups) {
       for(j <- 0 until (group_size / 2)) {
         val left = g * group_size + j
@@ -103,6 +103,8 @@ object TestCooleyTukey extends App {
   val ct = new CooleyTukey(data)
   val res = ct.compute()
   println(res)
+  val refres = (new FourierTransform(data)).compute()
+  println(refres)
   val inv_ct = new InvCooleyTukey(res)
   val inv_res = inv_ct.compute()
   println(inv_res)

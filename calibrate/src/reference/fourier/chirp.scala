@@ -41,7 +41,7 @@ class Chirp(xs : Seq[Complex[Double]]) {
   }
 }
 
-object ChirpTest extends App {
+object TestChirp extends App {
   val data = Seq(
     Complex(1.23, -4.56),
     Complex(7.89,  0.12),

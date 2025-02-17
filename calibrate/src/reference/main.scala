@@ -53,5 +53,5 @@ object Test extends App {
   println(s"px = $px")
   println(s"py = $py")
   println(s"theta-hat = ${calibrate.theta_hat}")
-  println(s"phi_hat = ${calibrate.phi_hat}")
+  println(s"phi-hat = ${calibrate.phi_hat}")
 }
