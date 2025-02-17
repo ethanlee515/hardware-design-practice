@@ -3,7 +3,6 @@ import spire.math.Complex
 import scala.math.Pi
 import spire.implicits._
 
-
 class Precompute(val num_layers : Int) {
   def twiddle_factor(l : Int, j : Int) : Complex[Double] = {
     return Complex.polar(1.0, - 2 * Pi * j / (1 << (num_layers - l)))
