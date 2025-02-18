@@ -17,15 +17,15 @@ class Triagonal(val n: Int) {
     return (n * (n + 1) * (n + 2)).toDouble / 12
   }
 
-  def inverse_action_ith(i: Int, v: Seq[Complex[Double]]) : Complex[Double] = {
-    var s = Complex.zero[Double]
+  def inverse_action_ith(i: Int, v: Seq[Double]) : Double = {
+    var s = 0.0
     for(j <- 0 until n) {
       s = s + get_inverse(i, j) * v(j)
     }
     return s
   }
 
-  def inverse_action(v: Seq[Complex[Double]]) : Seq[Complex[Double]] = {
+  def inverse_action(v: Seq[Double]) : Seq[Double] = {
     return Seq.tabulate(n)(i => inverse_action_ith(i, v))
   }
 }
@@ -37,10 +37,11 @@ class Calibrate (px : Seq[Double], py : Seq[Double]) {
   val fft = new FourierTransform(hs)
   val c = fft.compute()
   val slice = c.slice(0, d)
-  val theta_hat = slice.reduce(_ + _) / slice.length
+  val slice_mod = slice.map(_.abs)
+  val theta_hat = slice_mod.reduce(_ + _) / slice.length
   val deltas = Seq.tabulate(d - 1)(i => (c(i) * c(i + 1).conjugate).arg)
   val trigonal = new Triagonal(d - 1)
-  val numerator = trigonal.inverse_action(slice).reduce(_ + _)
+  val numerator = trigonal.inverse_action(deltas).reduce(_ + _)
   val denominator = 2 * trigonal.sum_inverse_entries()
   val phi_hat = numerator / denominator
 }
