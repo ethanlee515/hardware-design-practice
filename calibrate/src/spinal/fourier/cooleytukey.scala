@@ -150,17 +150,26 @@ object TestInvCooleyTukey extends App {
   Complex(-5.67, 8.90),
   Complex(1.23, 4.56),
   Complex(-7.89, -0.12),
+  Complex(3.45, -6.78),
+
+  Complex(1.23, -4.56),
+  Complex(7.89, 0.12),
+  Complex(-3.45, 6.78),
+  Complex(9.01, -2.34),
+  Complex(-5.67, 8.90),
+  Complex(1.23, 4.56),
+  Complex(-7.89, -0.12),
   Complex(3.45, -6.78)
   )
   val ref_res = (new reference.fourier.InvCooleyTukey(data)).compute()
   println(f"correct result = $ref_res")
   SimConfig.compile { new InvCooleyTukey(data.length) }.doSim { dut =>
-    for(i <- 0 until 8) {
+    for(i <- 0 until data.length) {
       dut.xs(i).re #= data(i).real
       dut.xs(i).im #= data(i).imag
     }
     sleep(1)
-    val res = Seq.tabulate(8) { i =>
+    val res = Seq.tabulate(data.length) { i =>
       Complex(dut.ys(i).re.toDouble, dut.ys(i).im.toDouble)
     }
     println(f"computed result = $res")

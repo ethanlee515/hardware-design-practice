@@ -7,13 +7,13 @@ class ChirpPrecompute(xslen : Int) {
   val leastLen = 2 * xslen - 1
   val log2_leastLen = 31 - Integer.numberOfLeadingZeros(leastLen)
   val chirplen = 2 ** (log2_leastLen + 1)
-  val primitive_root = Complex.polar(1.0, - 2 * Pi / xslen)
+  val sqrt_primitive_root = Complex.polar(1.0, - Pi / xslen)
   def get_vn(n : Int) : Complex[Double] = {
     if(n <= xslen - 1) {
-      return primitive_root ** (- n * n / 2.0)
+      return sqrt_primitive_root ** (- n * n)
     }
     if(n >= chirplen - xslen + 1) {
-      return primitive_root ** (- ((chirplen - n) ** 2) / 2.0)
+      return sqrt_primitive_root ** (- ((chirplen - n) ** 2))
     }
     return Complex.zero[Double]
   }
@@ -25,9 +25,9 @@ class ChirpPrecompute(xslen : Int) {
 class Chirp(xs : Seq[Complex[Double]]) {
   val precompute = new ChirpPrecompute(xs.length)
   val chirplen = precompute.chirplen
-  val w = precompute.primitive_root
+  val w = precompute.sqrt_primitive_root
   val ys1 = xs.zipWithIndex.map { case (x, i) =>
-    x * (w ** (i * i / 2.0))
+    x * (w ** (i * i))
   }
   val ys = ys1 ++ Array.fill(chirplen - xs.length)(Complex.zero[Double])
   val ct = new CooleyTukey(ys)
@@ -36,8 +36,8 @@ class Chirp(xs : Seq[Complex[Double]]) {
   val ict = new InvCooleyTukey(gs_fft)
   val gs = ict.compute()
   val result = Seq.tabulate(xs.length) { k =>
-    val w = precompute.primitive_root
-    (w ** (k * k / 2.0)) * gs(k)
+    val w = precompute.sqrt_primitive_root
+    (w ** (k * k)) * gs(k)
   }
 }
 

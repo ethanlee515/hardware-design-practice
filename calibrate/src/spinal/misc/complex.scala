@@ -6,8 +6,8 @@ import spinal.lib._
 import spire.math.Complex
 
 case class Cx() extends Bundle {
-  val re = SFix(8 exp, -24 exp)
-  val im = SFix(8 exp, -24 exp)
+  val re = SFix(16 exp, -16 exp)
+  val im = SFix(16 exp, -16 exp)
 
   def setval(z: Complex[Double]) {
     re := z.real
