@@ -1,4 +1,4 @@
-package complex
+package spinalmath
 
 import spinal.core._
 import spinal.core.sim._

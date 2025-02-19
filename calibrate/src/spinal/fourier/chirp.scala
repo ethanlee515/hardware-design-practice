@@ -1,6 +1,5 @@
 package fourier
 
-import complex._
 import spinal.core._
 import spinal.core.sim._
 import spinal.lib._
@@ -8,6 +7,7 @@ import reference.fourier.ChirpPrecompute
 import reference.fourier.FourierTransform
 import spire.math.Complex
 import spire.implicits._
+import spinalmath._
 
 class Chirp(xslen : Int) extends Component {
   val xs = in(Vec.fill(xslen)(Cx()))

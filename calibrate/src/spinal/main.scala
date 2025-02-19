@@ -1,4 +1,3 @@
-import complex._
 import spinal.core._
 import spinal.core.sim._
 import spinal.lib._
@@ -6,11 +5,12 @@ import fourier.Chirp
 import scala.util.Random
 import spire.math.Complex
 import spire.implicits._
+import spinalmath._
 
 class Calibrate(len : Int) extends Component {
   val px = in(Vec.fill(len)(SFix(1 exp, -16 exp)))
   val py = in(Vec.fill(len)(SFix(1 exp, -16 exp)))
-  val theta_hat = out(Cx())
+  val theta_hat = out(SFix(16 exp, -16 exp))
   val d = len / 2
   val hs = Vec.fill(len)(Cx())
   for(i <- 0 until len) {
@@ -29,17 +29,28 @@ class Calibrate(len : Int) extends Component {
   slicesum.zs := slice
   val invSliceLen = SFix(1 exp, -16 exp)
   invSliceLen := 1.0 / d
-  theta_hat.re := (slicesum.s.re * invSliceLen).truncated
-  theta_hat.im := (slicesum.s.im * invSliceLen).truncated
+  // TODO wrong
+  theta_hat := (slicesum.s.re * invSliceLen).truncated
+//  theta_hat.im := (slicesum.s.im * invSliceLen).truncated
+  val deltas = Vec.fill(d - 1)(Cx())
+  /*
+  for(i <- 0 until d - 1) {
+    val mul = new CxMul()
+    mul.z1 := slice(i)
+    mul.z2.re := slice(i + 1).re
+    mul.z2.im := - slice(i + 1).im
+    // TODO arg...
+  }
+  */
 }
 
 object Demo extends App {
-  val n = 3 + Random.nextInt(10)
+  val n = 5 + Random.nextInt(10)
   val px = Seq.fill(n)(Random.nextDouble())
   val py = Seq.fill(n)(Random.nextDouble())
-  val ref = new reference.Calibrate(px, py)
   println(s"px = $px")
   println(s"py = $py")
+  val ref = new reference.Calibrate(px, py)
   println(s"reference theta-hat = ${ref.theta_hat}")
   println(s"reference phi-hat = ${ref.phi_hat}")
   SimConfig.compile { new Calibrate(n) }.doSim { dut =>
@@ -48,8 +59,7 @@ object Demo extends App {
       dut.py(i) #= py(i)
     }
     sleep(1)
-    val theta_hat = Complex(dut.theta_hat.re.toDouble,
-      dut.theta_hat.im.toDouble)
+    val theta_hat = dut.theta_hat.toDouble
     println(f"computed theta_hat = $theta_hat")
   }
 }

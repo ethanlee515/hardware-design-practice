@@ -1,12 +1,12 @@
 package fourier
 
-import complex._
 import spinal.core._
 import spinal.core.sim._
 import spinal.lib._
 import reference.fourier.Precompute
 import reference.fourier.FourierTransform
 import spire.math.Complex
+import spinalmath._
 
 class CooleyTukey(xslen : Int) extends Component {
   val precompute = new Precompute(xslen)
