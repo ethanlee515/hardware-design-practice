@@ -25,15 +25,22 @@ class Calibrate(len : Int) extends Component {
   for(i <- 0 until d) {
     slice(i) := fft.ys(i)
   }
-  val slicesum = new CxVecAdd(d)
-  slicesum.zs := slice
+  slice.simPublic()
+  val slice_abs = Vec.fill(d)(SFix(16 exp, -16 exp))
+  for(i <- 0 until d) {
+    val sqrt = new Sqrt()
+    sqrt.x := (slice(i).re * slice(i).re + slice(i).im * slice(i).im).truncated
+    slice_abs(i) := sqrt.y
+  }
+  slice_abs.simPublic()
+  val slicesum = new VecAdd(d)
+  slicesum.xs := slice_abs
   val invSliceLen = SFix(1 exp, -16 exp)
   invSliceLen := 1.0 / d
-  // TODO wrong
-  theta_hat := (slicesum.s.re * invSliceLen).truncated
+  theta_hat := (slicesum.s * invSliceLen).truncated
 //  theta_hat.im := (slicesum.s.im * invSliceLen).truncated
-  val deltas = Vec.fill(d - 1)(Cx())
   /*
+  val deltas = Vec.fill(d - 1)(Cx())
   for(i <- 0 until d - 1) {
     val mul = new CxMul()
     mul.z1 := slice(i)
@@ -59,6 +66,17 @@ object Demo extends App {
       dut.py(i) #= py(i)
     }
     sleep(1)
+
+    val d = n / 2
+
+    val slice = Seq.tabulate(d) { i =>
+      Complex(dut.slice(i).re.toDouble, dut.slice(i).im.toDouble)
+    }
+    println(slice)
+
+    val slice_abs = Seq.tabulate(d) {i => dut.slice_abs(i).toDouble }
+    println(f"slice abs = $slice_abs")
+    
     val theta_hat = dut.theta_hat.toDouble
     println(f"computed theta_hat = $theta_hat")
   }
