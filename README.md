@@ -13,6 +13,6 @@ Details:
 
 ## Implementing Quantum Gate Calibration
 
-Work in progress.
+Usage: `./mill Calibrate.runMain Demo`
 
 [Reference](https://arxiv.org/pdf/2407.01583)
