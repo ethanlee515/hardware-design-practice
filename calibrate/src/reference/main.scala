@@ -5,7 +5,7 @@ import scala.math.min
 import spire.math.Complex
 import spire.implicits._
 
-class Triagonal(val n: Int) {
+class Tridiagonal(val n: Int) {
   def get_inverse(i: Int, j: Int) : Double = {
     // 1-indexed pen-and-paper formula...
     val i1 = i + 1
@@ -36,11 +36,11 @@ class Calibrate (px : Seq[Double], py : Seq[Double]) {
   val slice_mod = slice.map(_.abs)
   val theta_hat = slice_mod.reduce(_ + _) / slice.length
   val deltas = Seq.tabulate(d - 1)(i => (c(i) * c(i + 1).conjugate).arg)
-  val trigonal = new Triagonal(d - 1)
-  val denominator = 2 * trigonal.sum_inverse_entries()
+  val tridiagonal = new Tridiagonal(d - 1)
+  val denominator = 2 * tridiagonal.sum_inverse_entries()
   var numerator = 0.0
   for(i <- 0 until (d - 1)) {
-    numerator = numerator + deltas(i) * trigonal.sum_inverse_column(i)
+    numerator = numerator + deltas(i) * tridiagonal.sum_inverse_column(i)
   }
   val phi_hat = numerator / denominator
 }
