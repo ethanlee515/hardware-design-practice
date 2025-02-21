@@ -32,3 +32,11 @@ Though we now output the correct result, there are still lots to work on.
 * There might be a better way to do a square root than by Newton's method.
   On the same topic, I don't know how many iterations of Newton's method to run, but 30 is probably overkill.
 * Maybe I should be borrowing my teammates' complex number type instead of rolling my own?
+* Sometimes I have the following antipattern:
+  ```
+  val zero = SFix(16 exp, -16 exp)
+  zero := 0.0
+  val minus_x := zero - x
+  ```
+  Due to apparently SpinalHDL does not like my unary minus operator.
+  Is there a cleaner way to express this code?
