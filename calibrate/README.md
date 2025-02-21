@@ -15,9 +15,11 @@ then computes $$\hat{\theta}$$ and $$\hat{\phi}$$ in both software and SpinalHDL
   * `fourier`: contains the [Chirp](https://ieeexplore.ieee.org/abstract/document/1162034) algorithm for optimized Fourier transform on arbitrary-length sequences.
     Calls the "Cooley-Tukey" FFT algorithm as a subroutine.
   * `math`: Contains miscellaneous mathematical components.
+    * `main.scala`: top-level main `Component`
+    * `demo.scala`: how to use the main component in i.e. simulation
     * `arctan`: CORDIC-based implementation of atan2
     * `sqrt`: Newton's method implementation for square root.
-      More concrete, first $$\frac{1}{\sqrt{x}}$$ is computed using Newton's method, as that is simpler than $$\sqrt{x}$$.
+      More concretely, first $$\frac{1}{\sqrt{x}}$$ is computed using Newton's method, as that is simpler than $$\sqrt{x}$$.
       We then compute $$\sqrt{x}=x\cdot\frac{1}{\sqrt{x}}$$.
     * `vecsum`: Summing a vector using a binary tree
     * `complex`: Complex numbers, and some simple operations on them
