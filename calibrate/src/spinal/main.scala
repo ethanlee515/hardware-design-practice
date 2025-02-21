@@ -27,14 +27,12 @@ class Calibrate(len : Int) extends Component {
   for(i <- 0 until d) {
     slice(i) := fft.ys(i)
   }
-  slice.simPublic()
   val slice_abs = Vec.fill(d)(SFix(16 exp, -16 exp))
   for(i <- 0 until d) {
     val sqrt = new Sqrt()
     sqrt.x := (slice(i).re * slice(i).re + slice(i).im * slice(i).im).truncated
     slice_abs(i) := sqrt.y
   }
-  slice_abs.simPublic()
   val slicesum = new VecAdd(d)
   slicesum.xs := slice_abs
   val invSliceLen = SFix(1 exp, -16 exp)
@@ -83,17 +81,13 @@ object Demo extends App {
       dut.py(i) #= py(i)
     }
     sleep(1)
-
     val d = n / 2
-
     val slice = Seq.tabulate(d) { i =>
       Complex(dut.slice(i).re.toDouble, dut.slice(i).im.toDouble)
     }
     println(slice)
-
     val theta_hat = dut.theta_hat.toDouble
     println(f"computed theta_hat = $theta_hat")
-
     val phi_hat = dut.phi_hat.toDouble
     println(f"computed phi_hat = $phi_hat")
   }
