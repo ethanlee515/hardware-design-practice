@@ -1,10 +1,7 @@
 import spinal.core._
 import spinal.core.sim._
 import spinal.lib._
-import fourier.Chirp
 import scala.util.Random
-import spire.math.Complex
-import spire.implicits._
 
 object Demo extends App {
   val n = 5 + Random.nextInt(10)
@@ -21,7 +18,6 @@ object Demo extends App {
       dut.py(i) #= py(i)
     }
     sleep(1)
-    val d = n / 2
     val theta_hat = dut.theta_hat.toDouble
     println(f"computed theta_hat = $theta_hat")
     val phi_hat = dut.phi_hat.toDouble
