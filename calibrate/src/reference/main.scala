@@ -17,16 +17,12 @@ class Triagonal(val n: Int) {
     return (n * (n + 1) * (n + 2)).toDouble / 12
   }
 
-  def inverse_action_ith(i: Int, v: Seq[Double]) : Double = {
+  def sum_inverse_column(col : Int) : Double = {
     var s = 0.0
-    for(j <- 0 until n) {
-      s = s + get_inverse(i, j) * v(j)
+    for(i <- 0 until n) {
+      s += get_inverse(i, col)
     }
     return s
-  }
-
-  def inverse_action(v: Seq[Double]) : Seq[Double] = {
-    return Seq.tabulate(n)(i => inverse_action_ith(i, v))
   }
 }
 
@@ -41,18 +37,21 @@ class Calibrate (px : Seq[Double], py : Seq[Double]) {
   val theta_hat = slice_mod.reduce(_ + _) / slice.length
   val deltas = Seq.tabulate(d - 1)(i => (c(i) * c(i + 1).conjugate).arg)
   val trigonal = new Triagonal(d - 1)
-  val numerator = trigonal.inverse_action(deltas).reduce(_ + _)
   val denominator = 2 * trigonal.sum_inverse_entries()
+  var numerator = 0.0
+  for(i <- 0 until (d - 1)) {
+    numerator = numerator + deltas(i) * trigonal.sum_inverse_column(i)
+  }
   val phi_hat = numerator / denominator
 }
 
 object Test extends App {
-  val n = 5
+  val n = 13
   val px = Seq.fill(n)(Random.nextDouble())
   val py = Seq.fill(n)(Random.nextDouble())
-  val calibrate = new Calibrate(px, py)
   println(s"px = $px")
   println(s"py = $py")
+  val calibrate = new Calibrate(px, py)
   println(s"theta-hat = ${calibrate.theta_hat}")
   println(s"phi-hat = ${calibrate.phi_hat}")
 }
