@@ -12,9 +12,10 @@ object ATanPrecompute {
 
 class ATan2(y : Double, x : Double) {
   var result = 0.0
-  val flipped = (x < 0)
-  var xv = if(flipped) (-x) else x
-  var yv = if(flipped) (-y) else y
+  val q2 = (x < 0 && y > 0)
+  val q3 = (x < 0 && y < 0)
+  var xv = if(q2 || q3) (-x) else x
+  var yv = if(q2 || q3) (-y) else y
   for(i <- 0 until 20) {
     val d = if (yv > 0) 1 else -1
     val x_new = xv + d * yv * (2.0 ** (-i))
@@ -23,11 +24,11 @@ class ATan2(y : Double, x : Double) {
     xv = x_new
     yv = y_new
   } 
-  if(flipped) {
+  if(q2) {
     result += Pi
   }
-  if(result < 0) {
-    result += 2 * Pi
+  if(q3) {
+    result -= Pi
   }
 }
 
@@ -35,8 +36,6 @@ object TestATan2 extends App {
   val x = -2.0 + 4.0 * Random.nextDouble()
   val y = -2.0 + 4.0 * Random.nextDouble()
   val theta = (new ATan2(y, x)).result
-  val t = math.atan2(y, x)
-  val ref_theta = if (t < 0) t + 2 * Pi else t
-  println(s"reference atan2($y, $x) = $ref_theta")
+  println(s"reference atan2($y, $x) = ${math.atan2(y, x)}")
   println(s"computed = $theta")
 }
