@@ -13,7 +13,7 @@ then computes $$\hat{\theta}$$ and $$\hat{\phi}$$ in both software and SpinalHDL
 * `reference`: Scala implementation; treated as the golden model.
 * `spinal`: Our SpinalHDL implementation.
   * `main.scala`: top-level main `Component`
-  * `demo.scala`: how to use the main component in i.e. simulation
+  * `demo.scala`: how to use the main component e.g. in simulation
   * `fourier`: contains the [Chirp](https://ieeexplore.ieee.org/abstract/document/1162034) algorithm for optimized Fourier transform on arbitrary-length sequences.
     Calls the "Cooley-Tukey" FFT algorithm as a subroutine.
   * `math`: Contains miscellaneous mathematical components.
