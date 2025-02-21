@@ -12,7 +12,7 @@ then computes $$\hat{\theta}$$ and $$\hat{\phi}$$ in both software and SpinalHDL
 
 * `reference`: Scala implementation; treated as the golden model.
 * `spinal`: Our SpinalHDL implementation.
-  * `fourier`: contains the "Chirp" algorithm for optimized Fourier transform on arbitrary-length sequences.
+  * `fourier`: contains the [Chirp](https://ieeexplore.ieee.org/abstract/document/1162034) algorithm for optimized Fourier transform on arbitrary-length sequences.
     Calls the "Cooley-Tukey" FFT algorithm as a subroutine.
   * `math`: Contains miscellaneous mathematical components.
     * `arctan`: CORDIC-based implementation of atan2
