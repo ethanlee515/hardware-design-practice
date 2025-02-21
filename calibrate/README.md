@@ -2,6 +2,12 @@
 
 Implementing Algorithm 1 from page 9 of [this](https://arxiv.org/pdf/2407.01583) paper.
 
+## Usage
+
+Go to the parent folder of this one, and try `./mill Calibrate.runMain Demo`.
+This invokes the [main demo](./src/spinal/demo.scala), which samples inputs $$px$$ and $$py$$ randomly,
+then computes $$\hat{\theta}$$ and $$\hat{\phi}$$ in both software and SpinalHDL.
+
 ## Project structure
 
 * `reference`: Scala implementation; treated as the golden model.
