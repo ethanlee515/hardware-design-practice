@@ -4,7 +4,7 @@ Implementing Algorithm 1 from page 9 of [this](https://arxiv.org/pdf/2407.01583)
 
 ## Usage
 
-Go to the parent folder of this one, and try `./mill Calibrate.runMain Demo`.
+Go to the root folder of this repository, and try `./mill Calibrate.runMain Demo`.
 This invokes the [main demo](./src/spinal/demo.scala), which samples inputs $$p_x$$ and $$p_y$$ randomly,
 then computes $$\hat{\theta}$$ and $$\hat{\phi}$$ in both software and SpinalHDL.
 
