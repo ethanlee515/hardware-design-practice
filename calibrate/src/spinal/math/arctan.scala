@@ -18,7 +18,7 @@ class ATan2 extends Component {
   acc := 0
   val q2 = (x < 0 && y > 0)
   val q3 = (x < 0 && y < 0)
-  var zero = SFix(16 exp, -16 exp)
+  val zero = SFix(16 exp, -16 exp)
   zero := 0.0
   var xv = SFix(16 exp, -16 exp)
   xv := (q2 || q3) ? (zero - x).truncated | x
