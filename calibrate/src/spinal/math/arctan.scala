@@ -31,15 +31,13 @@ class ATan2 extends Component {
     val acc_new = SFix(16 exp, -16 exp)
     val f = SFix(16 exp, -16 exp)
     f := ATanPrecompute.get(i)
-    val rs = SFix(16 exp, -16 exp)
-    rs := (2.0 ** (-i))
     when(d) {
-      x_new := (xv + yv * rs).truncated
-      y_new := (yv - xv * rs).truncated
+      x_new := (xv + (yv >> i)).truncated
+      y_new := (yv - (xv >> i)).truncated
       acc_new := (acc + f).truncated
     } otherwise {
-      x_new := (xv - yv * rs).truncated
-      y_new := (yv + xv * rs).truncated
+      x_new := (xv - (yv >> i)).truncated
+      y_new := (yv + (xv >> i)).truncated
       acc_new := (acc - f).truncated
     }
     xv = x_new
