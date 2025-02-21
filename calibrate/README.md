@@ -36,7 +36,7 @@ Though we now output the correct result, there are still lots to work on.
   ```
   val zero = SFix(16 exp, -16 exp)
   zero := 0.0
-  val minus_x := zero - x
+  val minus_x := (zero - x).truncated
   ```
   Due to apparently SpinalHDL does not like my unary minus operator.
   Is there a cleaner way to express this code?
