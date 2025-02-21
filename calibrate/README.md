@@ -16,9 +16,11 @@ then computes $$\hat{\theta}$$ and $$\hat{\phi}$$ in both software and SpinalHDL
     Calls the "Cooley-Tukey" FFT algorithm as a subroutine.
   * `math`: Contains miscellaneous mathematical components.
     * `arctan`: CORDIC-based implementation of atan2
-    * `complex`: Complex numbers
-    * `sqrt`: Newton's method implemenetation for square root
+    * `sqrt`: Newton's method implementation for square root.
+      More concrete, first $$\frac{1}{\sqrt{x}}$$ is computed using Newton's method, as that is simpler than $$\sqrt{x}$$.
+      We then compute $$\sqrt{x}=x\cdot\frac{1}{\sqrt{x}}$$.
     * `vecsum`: Summing a vector using a binary tree
+    * `complex`: Complex numbers, and some simple operations on them
 
 ## Issues and Questions
 
