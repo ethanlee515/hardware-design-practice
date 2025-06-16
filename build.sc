@@ -5,7 +5,7 @@ import mill.scalalib._
 object Cordic extends ScalaModule {
   def scalaVersion = "2.12.18"
 
-  override def millSourcePath = os.pwd / "cordic"
+  //override def millSourcePath = os.pwd / "cordic"
   def ivyDeps = Agg(
     ivy"com.github.spinalhdl::spinalhdl-core:1.10.2a",
     ivy"com.github.spinalhdl::spinalhdl-lib:1.10.2a",
@@ -17,7 +17,7 @@ object Cordic extends ScalaModule {
 object Calibrate extends ScalaModule {
   def scalaVersion = "2.12.18"
 
-  override def millSourcePath = os.pwd / "calibrate"
+  //override def millSourcePath = os.pwd / "calibrate"
   def ivyDeps = Agg(
     ivy"com.github.spinalhdl::spinalhdl-core:1.10.2a",
     ivy"com.github.spinalhdl::spinalhdl-lib:1.10.2a",
